@@ -39,11 +39,21 @@ const express_1 = __importStar(require("express"));
 const client_1 = require("@prisma/client");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
+const common_1 = require("@suyash0007/common");
 const app = (0, express_1.default)();
 const router = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
 app.use(express_1.default.json());
 router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    try {
+        const success = common_1.signedUpInput.parse(body);
+    }
+    catch (err) {
+        return res.json({
+            msg: "Invalid Input"
+        });
+    }
     const email = req.body.email;
     const password = req.body.password;
     try {
@@ -65,6 +75,15 @@ router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 }));
 router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    try {
+        const success = common_1.signedInInput.parse(body);
+    }
+    catch (err) {
+        return res.json({
+            msg: "Invalid Input"
+        });
+    }
     const email = req.body.email;
     const password = req.body.password;
     const exsistingUser = yield prisma.user.findUnique({

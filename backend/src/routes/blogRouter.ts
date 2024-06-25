@@ -1,10 +1,20 @@
 import express,{Router} from 'express'
 import { PrismaClient } from '@prisma/client'
+import {createBlog,updateBlog} from "@suyash0007/common"
 const app=express()
 const router=Router()
 const prisma=new PrismaClient()
 
 router.post('/',async(req,res)=>{
+    const body=req.body
+    try{
+        const success=createBlog.parse(body)
+    }
+    catch(err){
+        return res.json({
+            msg:"Invalid Input"
+        })
+    }
     try{
         const blog=await prisma.post.create({
             data:{
@@ -28,6 +38,15 @@ router.post('/',async(req,res)=>{
     
 })
 router.put('/',async(req,res)=>{
+    const body=req.body
+    try{
+        const success=updateBlog.parse(body)
+    }
+    catch(err){
+        return res.json({
+            msg:"Invalid Input"
+        })
+    }
     try{
         const blog=await prisma.post.update({
             where:{

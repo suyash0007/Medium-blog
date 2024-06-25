@@ -34,10 +34,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importStar(require("express"));
 const client_1 = require("@prisma/client");
+const common_1 = require("@suyash0007/common");
 const app = (0, express_1.default)();
 const router = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    try {
+        const success = common_1.createBlog.parse(body);
+    }
+    catch (err) {
+        return res.json({
+            msg: "Invalid Input"
+        });
+    }
     try {
         const blog = yield prisma.post.create({
             data: {
@@ -57,6 +67,15 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 router.put('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    try {
+        const success = common_1.updateBlog.parse(body);
+    }
+    catch (err) {
+        return res.json({
+            msg: "Invalid Input"
+        });
+    }
     try {
         const blog = yield prisma.post.update({
             where: {

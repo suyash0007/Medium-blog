@@ -2,11 +2,22 @@ import express,{Router} from 'express'
 import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config';
+import {signedInInput,signedUpInput} from "@suyash0007/common"
 const app=express()
 const router=Router()
 const prisma=new PrismaClient()
 app.use(express.json())
 router.post('/signup',async (req,res)=>{
+    const body=req.body
+    try{
+        const success=signedUpInput.parse(body)
+    }
+    catch(err){
+        return res.json({
+            msg:"Invalid Input"
+        })
+    }
+
     const email=req.body.email
     const password=req.body.password
     try{
@@ -29,6 +40,15 @@ router.post('/signup',async (req,res)=>{
 
 })
 router.post('/signin',async (req,res)=>{
+    const body=req.body
+    try{
+        const success=signedInInput.parse(body)
+    }
+    catch(err){
+        return res.json({
+            msg:"Invalid Input"
+        })
+    }
     const email=req.body.email
     const password=req.body.password
     const exsistingUser=await prisma.user.findUnique({
